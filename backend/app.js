@@ -7,6 +7,8 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
+var swaggerUi = require('swagger-ui-express');
+var swaggerSpec = require('./config/swagger');
 var app = express();
 
 var connectDB = require("./config/database");
@@ -35,6 +37,7 @@ connectDB();
 app.get("/", (req, res) => res.send("You are in server"));
 
 app.use("/auth", authRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -53,3 +56,10 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
