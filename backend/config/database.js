@@ -1,22 +1,20 @@
 const mongoose = require("mongoose");
 
-/* Replace <username> <password> with your database details */
-const db = process.env.MONGO_URI;
-mongoose.set("strictQuery", true);
+async function connectDB() {
+  const uri = process.env.MONGO_URI;
+  if (!uri) {
+    throw new Error("MONGO_URI is not set in environment variables");
+  }
 
-const connectDB = async () => {
   try {
-    if (!db) {
-      throw new Error('MongoDB URI is not defined in environment variables');
-    }
-    await mongoose.connect(db, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("MongoDB is Connected...");
+    // In Mongoose 6+, NewUrlParser & UnifiedTopology are the defaults
+    await mongoose.connect(uri);
+
+    console.log(` MongoDB connected → ${mongoose.connection.host}`);
   } catch (err) {
-    console.error('MongoDB connection error:', err);
+    console.error("MongoDB connection error:", err);
     process.exit(1);
   }
-};
+}
+
 module.exports = connectDB;
