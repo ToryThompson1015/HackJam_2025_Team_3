@@ -1,5 +1,5 @@
+const jwt = require('jsonwebtoken');
 const User = require("../models/user");
-const { comparePassword } = require("../utils/passwordUtils");
 
 // Register Handler
 const register = async (req, res) => {
@@ -7,7 +7,7 @@ const register = async (req, res) => {
     const { firstName, email, password, lastName, location, role } = req.body;
 
     // Check if user already exists
-    const existingUser = await User.findOne({ name });
+    const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ message: "User already exists" });
 
@@ -26,6 +26,7 @@ const register = async (req, res) => {
       .status(201)
       .json({ message: "User registered successfully", userId: user._id });
   } catch (error) {
+    console.log('Register error:', error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -40,12 +41,24 @@ const login = async (req, res) => {
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     // Validate password
-    const isMatch = await comparePassword(password, user.password);
+    const isMatch = await user.comparePassword(password);
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    res.status(200).json({ message: "Login successful", userId: user._id });
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id }, // payload
+      process.env.JWT_SECRET || 'your_jwt_secret', // secret
+      { expiresIn: '1d' } // options
+    );
+
+    res.status(200).json({
+      message: "Login successful",
+      userId: user._id,
+      token
+    });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server error" });
   }
 };

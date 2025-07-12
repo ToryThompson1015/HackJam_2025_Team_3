@@ -4,7 +4,7 @@ const { hashPassword, comparePassword } = require("../utils/passwordUtils");
 const userSchema = mongoose.Schema(
   {
     firstName: String,
-    email: String,
+    email: {type: String, unique: true},
     password: String,
     lastName: {
       type: String,
@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["learner", "admin", "hr"],
+      enum: ["learner", "admin", "alumni"],
       default: "learner",
     },
   },
