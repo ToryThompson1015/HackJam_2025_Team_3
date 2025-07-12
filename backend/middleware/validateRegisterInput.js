@@ -1,7 +1,7 @@
 const { check, validationResult } = require("express-validator");
 
 const validateRegisterInput = [
-  check("name", "Username is required").not().isEmpty(),
+  check("firstName", "Username is required").not().isEmpty(),
   check("password", "Password is required").isLength({ min: 6 }),
   (req, res, next) => {
     const errors = validationResult(req);

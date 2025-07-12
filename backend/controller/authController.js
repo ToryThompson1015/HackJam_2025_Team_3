@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const { comparePassword } = require("../utils/passwordUtils");
 
 // Register Handler
 const register = async (req, res) => {
@@ -7,7 +6,7 @@ const register = async (req, res) => {
     const { firstName, email, password, lastName, location, role } = req.body;
 
     // Check if user already exists
-    const existingUser = await User.findOne({ name });
+    const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ message: "User already exists" });
 
@@ -40,7 +39,7 @@ const login = async (req, res) => {
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     // Validate password
-    const isMatch = await comparePassword(password, user.password);
+    const isMatch = await user.comparePassword(password);
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
