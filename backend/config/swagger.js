@@ -9,6 +9,16 @@ const options = {
       version: '1.0.0',
       description: 'API documentation for HackJam 2025 Team 3 backend',
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [{ bearerAuth: [] }],
     servers: [
       {
         url: 'http://localhost:3000', // Change port if needed

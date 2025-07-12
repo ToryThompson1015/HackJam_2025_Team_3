@@ -106,6 +106,8 @@ router.route("/login").post(validateLoginInput, login);
  *                   type: string
  *                 userId:
  *                   type: string
+ *                 token:
+ *                    type: string
  *       400:
  *         description: User already exists
  *       500:

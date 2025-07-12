@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const User = require("../models/user");
 
 // Register Handler
@@ -43,8 +44,20 @@ const login = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    res.status(200).json({ message: "Login successful", userId: user._id });
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id }, // payload
+      process.env.JWT_SECRET || 'your_jwt_secret', // secret
+      { expiresIn: '1d' } // options
+    );
+
+    res.status(200).json({
+      message: "Login successful",
+      userId: user._id,
+      token
+    });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server error" });
   }
 };
