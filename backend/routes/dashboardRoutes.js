@@ -26,6 +26,8 @@ const auth = require('../middleware/auth');
  *             schema:
  *               type: object
  *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
  *                 achievements:
  *                   type: array
  *                   items:
