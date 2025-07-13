@@ -7,11 +7,21 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
+var swaggerUi = require('swagger-ui-express');
+var swaggerSpec = require('./config/swagger');
 var app = express();
 
 var connectDB = require("./config/database");
 //router path
 var authRouter = require("./routes/authRoute");
+const achievementRoutes = require('./routes/achievementRoutes');
+const engagementRoutes = require('./routes/engagementRoutes');
+const badgeRoutes = require('./routes/badgeRoutes');
+const taskRoutes = require('./routes/taskRoutes');
+const gamificationRoutes = require('./routes/gamificationRoutes');
+const mcpRoutes = require('./routes/dashboardRoutes');
+const threadRoutes = require('./routes/threadRoutes');
+const postRoutes = require('./routes/postRoutes');
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -35,6 +45,15 @@ connectDB();
 app.get("/", (req, res) => res.send("You are in server"));
 
 app.use("/auth", authRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api/achievements', achievementRoutes);
+app.use('/api/engagements', engagementRoutes);
+app.use('/api/badges', badgeRoutes);
+app.use('/api/tasks', taskRoutes);
+app.use('/api/gamification', gamificationRoutes);
+app.use('/api/dashboard', mcpRoutes);
+app.use('/threads', threadRoutes);
+app.use('/posts', postRoutes); 
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -43,13 +62,17 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+  res.status(err.status || 500).json({
+    message: err.message,
+    error: process.env.NODE_ENV === 'development' ? err : {}
+  });
 });
 
 module.exports = app;
+
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
