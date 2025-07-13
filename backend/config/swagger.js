@@ -17,6 +17,50 @@ const options = {
           bearerFormat: 'JWT',
         },
       },
+      schemas: {
+        Achievement: {
+          type: 'object',
+          properties: {
+            _id: { type: 'string' },
+            user: { type: 'string' },
+            type: { type: 'string' },
+            title: { type: 'string' },
+            description: { type: 'string' },
+            date: { type: 'string', format: 'date' },
+            createdAt: { type: 'string', format: 'date-time' }
+          }
+        },
+        Engagement: {
+          type: 'object',
+          properties: {
+            _id: { type: 'string' },
+            user: { type: 'string' },
+            type: { type: 'string' },
+            title: { type: 'string' },
+            description: { type: 'string' },
+            date: { type: 'string', format: 'date' },
+            createdAt: { type: 'string', format: 'date-time' }
+          }
+        },
+        Point: {
+          type: 'object',
+          properties: {
+            user: { type: 'string' },
+            totalPoints: { type: 'integer' },
+            lastLogin: { type: 'string', format: 'date-time' },
+            streak: { type: 'integer' }
+          }
+        },
+        UserBadge: {
+          type: 'object',
+          properties: {
+            _id: { type: 'string' },
+            user: { type: 'string' },
+            badge: { type: 'object' }, // You can further define the badge schema if you want
+            dateAwarded: { type: 'string', format: 'date-time' }
+          }
+        }
+      }
     },
     security: [{ bearerAuth: [] }],
     servers: [
