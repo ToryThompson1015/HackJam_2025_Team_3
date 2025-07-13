@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { register, login, logout } = require("../controller/authController");
+// Example controller functions (replace with your actual logic)
 const validateLoginInput = require("../middleware/validateLoginInput");
 const validateRegisterInput = require("../middleware/validateRegisterInput");
 

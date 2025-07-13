@@ -59,19 +59,6 @@ const options = {
             badge: { type: 'object' }, // You can further define the badge schema if you want
             dateAwarded: { type: 'string', format: 'date-time' }
           }
-        },
-        User: {
-          type: 'object',
-          properties: {
-            _id: { type: 'string' },
-            firstName: { type: 'string' },
-            lastName: { type: 'string' },
-            email: { type: 'string' },
-            location: { type: 'string' },
-            role: { type: 'string' },
-            createdAt: { type: 'string', format: 'date-time' },
-            updatedAt: { type: 'string', format: 'date-time' }
-          }
         }
       }
     },
