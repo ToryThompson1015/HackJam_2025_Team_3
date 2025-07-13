@@ -20,6 +20,8 @@ const badgeRoutes = require('./routes/badgeRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const gamificationRoutes = require('./routes/gamificationRoutes');
 const mcpRoutes = require('./routes/dashboardRoutes');
+const threadRoutes = require('./routes/threadRoutes');
+const postRoutes = require('./routes/postRoutes');
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -50,6 +52,8 @@ app.use('/api/badges', badgeRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/gamification', gamificationRoutes);
 app.use('/api/dashboard', mcpRoutes);
+app.use('/threads', threadRoutes);
+app.use('/posts', postRoutes); 
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
