@@ -1,7 +1,7 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const dashboardController = require("../controller/dashboardController");
-const auth = require("../middleware/auth");
+const dashboardController = require('../controller/dashboardController');
+const auth = require('../middleware/auth');
 
 /**
  * @swagger
@@ -47,6 +47,6 @@ const auth = require("../middleware/auth");
  *       500:
  *         description: Server error
  */
-router.get("/summary", auth, dashboardController.getDashboardSummary);
+router.get('/summary', auth, dashboardController.getDashboardSummary);
 
 module.exports = router;
