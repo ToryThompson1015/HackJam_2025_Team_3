@@ -1,7 +1,7 @@
 # HackJam 2025 Team 3 Backend
 
 ## Project Overview
-This is the backend for the HackJam 2025 Team 3 project, built with Node.js, Express, and MongoDB. It supports user authentication, alumni achievement tracking, community engagement, and gamification features.
+This is the backend for the HackJam 2025 Team 3 project, built with Node.js, Express, and MongoDB. It supports user authentication, alumni achievement tracking, community engagement, gamification features, and forum functionality.
 
 ---
 
@@ -74,7 +74,35 @@ The server will run on `http://localhost:3000` by default.
 ```json
 {
   "message": "Login successful",
-  "userId": "<user_id>"
+  "userId": "<user_id>",
+  "token": "<jwt_token>"
+}
+```
+
+---
+
+### **Dashboard**
+#### Get Dashboard Summary
+- **GET** `/api/dashboard/summary`
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:**
+```json
+{
+  "user": {
+    "_id": "<user_id>",
+    "firstName": "Padmaja",
+    "lastName": "Doe",
+    "email": "padmaja@example.com",
+    "location": "City",
+    "role": "learner"
+  },
+  "achievements": [...],
+  "engagements": [...],
+  "points": {
+    "totalPoints": 100,
+    "streak": 3
+  },
+  "badges": [...]
 }
 ```
 
@@ -281,10 +309,87 @@ The server will run on `http://localhost:3000` by default.
 
 ---
 
+### **Forum - Threads**
+#### Create Thread
+- **POST** `/threads`
+- **Headers:** `Authorization: Bearer <token>`
+- **Request Body:**
+```json
+{
+  "title": "Discussion Topic",
+  "description": "Description of the thread"
+}
+```
+- **Response:** Thread object
+
+#### Get All Threads
+- **GET** `/threads`
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:** Array of thread objects
+
+#### Get Thread by ID
+- **GET** `/threads/:id`
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:** Thread object
+
+#### Update Thread
+- **PUT** `/threads/:id`
+- **Headers:** `Authorization: Bearer <token>`
+- **Request Body:** (fields to update)
+- **Response:** Updated thread object
+
+#### Delete Thread
+- **DELETE** `/threads/:id`
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:** `{ "message": "Thread deleted" }`
+
+---
+
+### **Forum - Posts**
+#### Create Post in Thread
+- **POST** `/threads/:threadId/posts`
+- **Headers:** `Authorization: Bearer <token>`
+- **Request Body:**
+```json
+{
+  "content": "Post content here"
+}
+```
+- **Response:** Post object
+
+#### Get Posts in Thread
+- **GET** `/threads/:threadId/posts`
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:** Array of post objects
+
+#### Get Post by ID
+- **GET** `/posts/:id`
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:** Post object
+
+#### Update Post
+- **PUT** `/posts/:id`
+- **Headers:** `Authorization: Bearer <token>`
+- **Request Body:**
+```json
+{
+  "content": "Updated post content"
+}
+```
+- **Response:** Updated post object
+
+#### Delete Post
+- **DELETE** `/posts/:id`
+- **Headers:** `Authorization: Bearer <token>`
+- **Response:** `{ "message": "Post deleted" }`
+
+---
+
 ## Notes
 - All protected routes require a valid JWT in the `Authorization` header: `Bearer <token>`
 - All request and response bodies are in JSON format.
 - For development, set `NODE_ENV=development` to see detailed error messages.
+- Forum threads and posts support community discussions and knowledge sharing.
 
 ---
 
